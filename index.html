@@ -11,11 +11,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             background-color: #000;
             color: white;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
                 radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
@@ -29,100 +30,100 @@
             to { background-position: 1000px 1000px; }
         }
 
+        /* Текст теперь жестко привязан к верху и не мешает кнопкам */
         .header-text {
+            position: fixed;
+            top: 40px;
             text-align: center;
-            margin-top: 40px; /* Отступ от самого верха экрана */
-            margin-bottom: 30px; /* Отступ до кнопок */
-            padding: 0 10px;
+            width: 100%;
+            z-index: 100;
         }
 
         .header-text h1 {
             font-size: 2.2rem;
             margin: 0;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            color: #fff;
         }
 
         .header-text p {
             font-style: italic;
             color: #ffb6c1;
             margin-top: 5px;
-            font-size: 1rem;
         }
 
-        .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            padding: 0 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 182, 193, 0.4);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 25px;
-            backdrop-filter: blur(8px);
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 182, 193, 0.4);
-        }
-
-        .heart-container {
-            flex-grow: 1; /* Занимает всё свободное место, толкая сердце вниз */
+        .main-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 250px;
+            margin-top: 50px; /* Чтобы не упиралось в заголовок */
         }
 
         .heart {
             background-color: #d63384;
-            height: 120px;
-            width: 120px;
+            height: 140px;
+            width: 140px;
             position: relative;
             transform: rotate(-45deg);
-            box-shadow: 0 0 40px #ff3399;
+            box-shadow: 0 0 50px #ff3399;
             animation: pulse 1.5s ease-in-out infinite;
+            z-index: 1;
         }
 
         .heart:before, .heart:after {
             background-color: #d63384;
             border-radius: 50%;
             content: "";
-            height: 120px;
-            width: 120px;
+            height: 140px;
+            width: 140px;
             position: absolute;
         }
 
-        .heart:before { top: -60px; left: 0; }
-        .heart:after { left: 60px; top: 0; }
+        .heart:before { top: -70px; left: 0; }
+        .heart:after { left: 70px; top: 0; }
 
         @keyframes pulse {
             0% { transform: rotate(-45deg) scale(1); }
-            50% { transform: rotate(-45deg) scale(1.1); }
+            50% { transform: rotate(-45deg) scale(1.05); }
             100% { transform: rotate(-45deg) scale(1); }
         }
 
+        /* Кнопки как в старой версии — вокруг сердца */
+        .btn {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.8rem;
+            z-index: 10;
+            transition: 0.3s;
+        }
+
+        .btn:active { transform: scale(0.9); }
+
+        /* Позиции кнопок в точности как ты хотел */
+        .btn-1 { top: -20px; left: 160px; }  /* Главное */
+        .btn-2 { top: 20px; left: -40px; }  /* Тот дождь */
+        .btn-3 { bottom: 20px; right: -50px; } /* Первая встреча */
+        .btn-4 { bottom: -30px; left: 10px; }  /* Наше море */
+
         #message-display {
+            position: fixed;
+            bottom: 40px;
             text-align: center;
-            padding: 15px;
-            margin-bottom: 40px;
-            width: 85%;
-            font-size: 1.1rem;
+            width: 80%;
             color: #ffb6c1;
-            min-height: 60px;
-            line-height: 1.4;
+            font-size: 1rem;
+            min-height: 50px;
+            transition: 0.5s;
         }
     </style>
 </head>
@@ -133,15 +134,13 @@
         <p>Благодарен Богу за тебя</p>
     </div>
 
-    <div class="buttons-container">
-        <button class="btn" onclick="showMessage('❤️ Главное', 'Ты самое дорогое, что у меня есть.')">❤️ Главное</button>
-        <button class="btn" onclick="showMessage('☁️ Тот дождь', 'Помнишь, как мы гуляли под дождем? Это было волшебно.')">☁️ Тот дождь</button>
-        <button class="btn" onclick="showMessage('🤝 Первая встреча', 'Тот день изменил мою жизнь навсегда.')">🤝 Первая встреча</button>
-        <button class="btn" onclick="showMessage('🌊 Наше море', 'Мечтаю снова оказаться там вместе с тобой.')">🌊 Наше море</button>
-    </div>
-
-    <div class="heart-container">
+    <div class="main-container">
         <div class="heart"></div>
+        
+        <button class="btn btn-1" onclick="showMessage('❤️ Главное', 'Ты самое дорогое, что у меня есть.')">❤️ Главное</button>
+        <button class="btn btn-2" onclick="showMessage('☁️ Тот дождь', 'Помнишь, как мы гуляли под дождем? Это было волшебно.')">☁️ Тот дождь</button>
+        <button class="btn btn-3" onclick="showMessage('🤝 Первая встреча', 'Тот день изменил мою жизнь навсегда.')">🤝 Первая встреча</button>
+        <button class="btn btn-4" onclick="showMessage('🌊 Наше море', 'Мечтаю снова оказаться там вместе с тобой.')">🌊 Наше море</button>
     </div>
 
     <div id="message-display">Нажми на любую кнопку...</div>
