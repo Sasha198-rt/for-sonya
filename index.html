@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>Для Сони</title>
     <style>
         body {
@@ -32,14 +33,14 @@
 
         .header-text {
             position: fixed;
-            top: 50px;
+            top: 40px;
             text-align: center;
             width: 100%;
             z-index: 5;
         }
 
         .header-text h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin: 0;
             letter-spacing: 5px;
             text-transform: uppercase;
@@ -49,12 +50,13 @@
             font-style: italic;
             color: #ffb6c1;
             margin-top: 5px;
+            font-size: 0.9rem;
         }
 
         .main-container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 280px;
+            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -62,8 +64,8 @@
 
         .heart {
             background-color: #d63384;
-            height: 140px;
-            width: 140px;
+            height: 130px;
+            width: 130px;
             position: relative;
             transform: rotate(-45deg);
             box-shadow: 0 0 50px #ff3399;
@@ -74,13 +76,13 @@
             background-color: #d63384;
             border-radius: 50%;
             content: "";
-            height: 140px;
-            width: 140px;
+            height: 130px;
+            width: 130px;
             position: absolute;
         }
 
-        .heart:before { top: -70px; left: 0; }
-        .heart:after { left: 70px; top: 0; }
+        .heart:before { top: -65px; left: 0; }
+        .heart:after { left: 65px; top: 0; }
 
         @keyframes pulse {
             0% { transform: rotate(-45deg) scale(1); }
@@ -93,23 +95,22 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 10px 18px;
+            padding: 10px 15px;
             border-radius: 20px;
             backdrop-filter: blur(5px);
             cursor: pointer;
             white-space: nowrap;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             z-index: 10;
             transition: 0.3s;
         }
 
-        /* Позиции как в твоем видео */
-        .btn-1 { top: -40px; right: -30px; } /* Главное */
-        .btn-2 { top: 30px; left: -60px; }   /* Тот дождь */
-        .btn-3 { bottom: 30px; right: -70px; } /* Первая встреча */
-        .btn-4 { bottom: -50px; left: 20px; }  /* Наше море */
+        /* Точные позиции как на видео */
+        .btn-1 { top: -30px; right: -20px; } 
+        .btn-2 { top: 40px; left: -60px; }   
+        .btn-3 { bottom: 40px; right: -60px; } 
+        .btn-4 { bottom: -40px; left: 20px; }  
 
-        /* Стили для всплывающего окна (модалки) */
         .modal {
             display: none;
             position: fixed;
@@ -118,49 +119,50 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
-            background-color: #1a1a1a;
+            background-color: #111;
             border: 2px solid #d63384;
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             width: 80%;
-            max-width: 400px;
+            max-width: 320px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(214, 51, 132, 0.5);
-            animation: fadeIn 0.4s ease;
+            box-shadow: 0 0 30px rgba(214, 51, 132, 0.4);
+            animation: modalIn 0.3s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-title {
             color: #ffb6c1;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 15px;
             display: block;
+            font-weight: bold;
         }
 
         .modal-text {
-            font-size: 1.1rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            line-height: 1.4;
             margin-bottom: 20px;
         }
 
         .close-btn {
-            background: none;
+            background: #d63384;
             border: none;
-            color: #666;
-            text-decoration: underline;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 0.8rem;
-            text-transform: uppercase;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -173,18 +175,17 @@
 
     <div class="main-container">
         <div class="heart"></div>
-        
-        <button class="btn btn-1" onclick="openModal('❤️ Главное', 'Соня, люблю тебя! ✨ Ты — лучшее, что со мной случилось. Этот код, эти слова — всё для тебя. Ты моя бесконечность!')">❤️ Главное</button>
-        <button class="btn btn-2" onclick="openModal('☁️ Тот самый ливень', 'Помнишь, как мы промокли до ниточки? Мы бежали, смеялись, и это был самый счастливый дождь в моей жизни.')">☁️ Тот дождь</button>
-        <button class="btn btn-3" onclick="openModal('🤝 Первая встреча', 'Мы так стеснялись друг друга... Я боялся сказать лишнее слово, а ты постоянно поправляла волосы. Но я уже тогда понял, что ты особенная.')">🤝 Первая встреча</button>
-        <button class="btn btn-4" onclick="openModal('🌊 Наше море', 'Первый раз вместе у воды. Тёплый ветер, шум волн и это невероятное чувство спокойствия, потому что ты была рядом.')">🌊 Наше море</button>
+        <button class="btn btn-1" onclick="openModal('❤️ Главное', 'Соня, ты мой самый дорогой человек. Каждая секунда с тобой — это счастье!')">❤️ Главное</button>
+        <button class="btn btn-2" onclick="openModal('☁️ Тот дождь', 'Тот день, когда мы попали под ливень... Помнишь? Я тогда понял, что готов гулять с тобой вечно.')">☁️ Тот дождь</button>
+        <button class="btn btn-3" onclick="openModal('🤝 Первая встреча', 'Я помню твою улыбку в тот самый первый раз. Моё сердце тогда пропустило удар.')">🤝 Первая встреча</button>
+        <button class="btn btn-4" onclick="openModal('🌊 Наше море', 'Мечтаю снова сидеть с тобой на берегу и смотреть на закат.')">🌊 Наше море</button>
     </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span id="modalTitle" class="modal-title"></span>
             <p id="modalText" class="modal-text"></p>
-            <button class="close-btn" onclick="closeModal()">Нажми, чтобы закрыть</button>
+            <button class="close-btn" onclick="closeModal()">Закрыть</button>
         </div>
     </div>
 
@@ -194,16 +195,11 @@
             document.getElementById('modalText').innerText = text;
             document.getElementById('myModal').style.display = 'flex';
         }
-
         function closeModal() {
             document.getElementById('myModal').style.display = 'none';
         }
-
-        // Закрытие при клике вне окна
         window.onclick = function(event) {
-            if (event.target == document.getElementById('myModal')) {
-                closeModal();
-            }
+            if (event.target == document.getElementById('myModal')) closeModal();
         }
     </script>
 </body>
