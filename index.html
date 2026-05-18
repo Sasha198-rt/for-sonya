@@ -2,205 +2,227 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Для Сони</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #000;
+            background: #050005;
             color: white;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            animation: stars 60s linear infinite;
-        }
-
-        @keyframes stars {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
-        }
-
-        .header-text {
-            position: fixed;
-            top: 40px;
-            text-align: center;
-            width: 100%;
-            z-index: 5;
-        }
-
-        .header-text h1 {
-            font-size: 2.2rem;
-            margin: 0;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-
-        .header-text p {
-            font-style: italic;
-            color: #ffb6c1;
-            margin-top: 5px;
-            font-size: 0.9rem;
-        }
-
-        .main-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            touch-action: none;
         }
 
-        .heart {
-            background-color: #d63384;
-            height: 130px;
-            width: 130px;
-            position: relative;
-            transform: rotate(-45deg);
-            box-shadow: 0 0 50px #ff3399;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .heart:before, .heart:after {
-            background-color: #d63384;
-            border-radius: 50%;
-            content: "";
-            height: 130px;
-            width: 130px;
+        /* Холст для звезд */
+        #starCanvas {
             position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
-        .heart:before { top: -65px; left: 0; }
-        .heart:after { left: 65px; top: 0; }
+        .main-heart {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background-color: #ff1493;
+            transform: rotate(-45deg);
+            box-shadow: 0 0 50px #ff1493, 0 0 100px #ff1493;
+            animation: beat 1.2s infinite;
+            z-index: 2;
+            transition: transform 0.1s ease-out; /* Для наклона */
+        }
 
-        @keyframes pulse {
+        .main-heart::before, .main-heart::after {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background-color: #ff1493;
+            border-radius: 50%;
+        }
+
+        .main-heart::before { top: -70px; left: 0; }
+        .main-heart::after { left: 70px; top: 0; }
+
+        @keyframes beat {
             0% { transform: rotate(-45deg) scale(1); }
-            50% { transform: rotate(-45deg) scale(1.08); }
+            15% { transform: rotate(-45deg) scale(1.15); }
+            30% { transform: rotate(-45deg) scale(1); }
+            45% { transform: rotate(-45deg) scale(1.08); }
             100% { transform: rotate(-45deg) scale(1); }
         }
 
-        .btn {
+        .memory-btn {
             position: absolute;
+            padding: 12px 18px;
             background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            font-size: 13px;
+            color: #fff;
             cursor: pointer;
-            white-space: nowrap;
-            font-size: 0.8rem;
             z-index: 10;
-            transition: 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+            transition: transform 0.2s;
         }
 
-        /* Точные позиции как на видео */
-        .btn-1 { top: -30px; right: -20px; } 
-        .btn-2 { top: 40px; left: -60px; }   
-        .btn-3 { bottom: 40px; right: -60px; } 
-        .btn-4 { bottom: -40px; left: 20px; }  
-
-        .modal {
-            display: none;
+        #story-box {
             position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #111;
-            border: 2px solid #d63384;
-            padding: 25px;
-            border-radius: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
             width: 80%;
-            max-width: 320px;
+            background: rgba(10, 0, 5, 0.98);
+            padding: 25px;
+            border-radius: 25px;
+            border: 2px solid #ff1493;
             text-align: center;
-            box-shadow: 0 0 30px rgba(214, 51, 132, 0.4);
-            animation: modalIn 0.3s ease-out;
+            z-index: 100;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px rgba(255, 20, 147, 0.4);
         }
 
-        @keyframes modalIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-title {
-            color: #ffb6c1;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            display: block;
-            font-weight: bold;
-        }
-
-        .modal-text {
-            font-size: 1rem;
-            line-height: 1.4;
-            margin-bottom: 20px;
-        }
+        #story-box.active { transform: translate(-50%, -50%) scale(1); }
 
         .close-btn {
-            background: #d63384;
-            border: none;
+            margin-top: 20px;
+            background: #ff1493;
             color: white;
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.9rem;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .name-label {
+            position: absolute;
+            top: 10%;
+            font-size: 24px;
+            letter-spacing: 6px;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            z-index: 5;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-text">
-        <h1>ДЛЯ СОНИ</h1>
-        <p>Благодарен Богу за тебя</p>
-    </div>
+    <canvas id="starCanvas"></canvas>
+    <div class="name-label">ДЛЯ СОНИ</div>
+    <div class="main-heart" id="heart"></div>
 
-    <div class="main-container">
-        <div class="heart"></div>
-        <button class="btn btn-1" onclick="openModal('❤️ Главное', 'Соня, ты мой самый дорогой человек. Каждая секунда с тобой — это счастье!')">❤️ Главное</button>
-        <button class="btn btn-2" onclick="openModal('☁️ Тот дождь', 'Тот день, когда мы попали под ливень... Помнишь? Я тогда понял, что готов гулять с тобой вечно.')">☁️ Тот дождь</button>
-        <button class="btn btn-3" onclick="openModal('🤝 Первая встреча', 'Я помню твою улыбку в тот самый первый раз. Моё сердце тогда пропустило удар.')">🤝 Первая встреча</button>
-        <button class="btn btn-4" onclick="openModal('🌊 Наше море', 'Мечтаю снова сидеть с тобой на берегу и смотреть на закат.')">🌊 Наше море</button>
-    </div>
+    <div class="memory-btn" style="top: 25%; left: 10%;" onclick="showStory(0)">🌧️ Тот дождь</div>
+    <div class="memory-btn" style="top: 70%; right: 10%;" onclick="showStory(1)">🤝 Первая встреча</div>
+    <div class="memory-btn" style="top: 80%; left: 15%;" onclick="showStory(2)">🌊 Наше море</div>
+    <div class="memory-btn" style="top: 20%; right: 15%;" onclick="showStory(3)">❤️ Главное</div>
 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span id="modalTitle" class="modal-title"></span>
-            <p id="modalText" class="modal-text"></p>
-            <button class="close-btn" onclick="closeModal()">Закрыть</button>
-        </div>
+    <div id="story-box">
+        <h2 id="title" style="color: #ff69b4;"></h2>
+        <p id="text" style="font-size: 16px; line-height: 1.5;"></p>
+        <div class="close-btn" onclick="closeStory()">Понятно ❤️</div>
     </div>
 
     <script>
-        function openModal(title, text) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalText').innerText = text;
-            document.getElementById('myModal').style.display = 'flex';
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        const heart = document.getElementById('heart');
+        let stars = [];
+        let mouse = { x: -100, y: -100 };
+        let tilt = { x: 0, y: 0 };
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    baseX: 0, baseY: 0,
+                    speed: 0.5 + Math.random() * 1
+                });
+            }
         }
-        function closeModal() {
-            document.getElementById('myModal').style.display = 'none';
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            
+            stars.forEach(s => {
+                // Взаимодействие с пальцем
+                let dx = mouse.x - s.x;
+                let dy = mouse.y - s.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 80) {
+                    s.x -= dx / 10;
+                    s.y -= dy / 10;
+                }
+
+                // Движение звезд вниз
+                s.y += s.speed;
+                if (s.y > canvas.height) s.y = 0;
+
+                // Эффект наклона телефона
+                let finalX = s.x + (tilt.x * 20);
+                let finalY = s.y + (tilt.y * 20);
+
+                ctx.beginPath();
+                ctx.arc(finalX, finalY, s.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Наклон сердца
+            heart.style.transform = `rotate(-45deg) translate(${tilt.x * 30}px, ${tilt.y * 30}px)`;
+            
+            requestAnimationFrame(drawStars);
         }
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('myModal')) closeModal();
+
+        // Слушатель касаний
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('touchmove', e => { 
+            mouse.x = e.touches[0].clientX; 
+            mouse.y = e.touches[0].clientY; 
+        });
+
+        // Слушатель наклона (акселерометр)
+        window.addEventListener('deviceorientation', e => {
+            tilt.x = e.gamma / 30; // Наклон влево-вправо
+            tilt.y = e.beta / 30;  // Наклон вперед-назад
+        });
+
+        const stories = [
+            { t: "Тот самый ливень 🌧️", txt: "Помнишь, как мы промокли до ниточки? Мы бежали, смеялись, и это был самый счастливый дождь в моей жизни. Я тогда понял, что мне с тобой ничего не страшно." },
+            { t: "Первая встреча ❤️", txt: "Мы так стеснялись друг друга... Я боялся сказать лишнее слово, а ты постоянно поправляла волосы. Но я уже тогда почувствовал, что ты особенная." },
+            { t: "Наше море 🌊", txt: "Первый раз вместе у воды. Тёплый ветер, шум волн и это невероятное чувство спокойствия, потому что ты была рядом. Хочу повторить это еще тысячу раз." },
+            { t: "Соня, люблю тебя! ✨", txt: "Ты — лучшее, что со мной случилось. Этот код, эти слова — всё для тебя. Ты моя бесконечность!" }
+        ];
+
+        function showStory(id) {
+            document.getElementById('title').innerText = stories[id].t;
+            document.getElementById('text').innerText = stories[id].txt;
+            document.getElementById('story-box').classList.add('active');
         }
+
+        function closeStory() {
+            document.getElementById('story-box').classList.remove('active');
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        drawStars();
     </script>
 </body>
 </html>
